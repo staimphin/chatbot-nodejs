@@ -4,7 +4,7 @@ function Chatbot(){
 	
 	this.weatherResult = {};
 	
-	this.apiID = '';
+	this.apiID = '7380d3cfd063f49e856e52be02c19a98';
 	this.greeting = ['こんにちは'];
 	this.weather = '';
 	this.base = ['すみません、出来る事は：基本挨拶・東京の天気予報・時間の知らせ', '言わぬが花'];
