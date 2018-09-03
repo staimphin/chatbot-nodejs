@@ -2,49 +2,9 @@
 function Chatbot(){
 	this.apiWeather = 'api.openweathermap.org/data/2.5/weather?id=';
 	
-	this.weatherResult = {
-    "coord": {
-        "lon": 139.69,
-        "lat": 35.69
-    },
-    "weather": [
-        {
-            "id": 520,
-            "main": "Rain",
-            "description": "弱いにわか雨",
-            "icon": "09d"
-        }
-    ],
-    "base": "stations",
-    "main": {
-        "temp": 296.18,
-        "pressure": 1012,
-        "humidity": 83,
-        "temp_min": 294.35,
-        "temp_max": 297.15
-    },
-    "visibility": 10000,
-    "wind": {
-        "speed": 1.5
-    },
-    "clouds": {
-        "all": 75
-    },
-    "dt": 1535868000,
-    "sys": {
-        "type": 1,
-        "id": 7612,
-        "message": 0.0066,
-        "country": "JP",
-        "sunrise": 1535832829,
-        "sunset": 1535879253
-    },
-    "id": 1850147,
-    "name": "Tokyo",
-    "cod": 200
-};
+	this.weatherResult = {};
 	
-	this.apiID = '7380d3cfd063f49e856e52be02c19a98';
+	this.apiID = '';
 	this.greeting = ['こんにちは'];
 	this.weather = '';
 	this.base = ['すみません、出来る事は：基本挨拶・東京の天気予報・時間の知らせ', '言わぬが花'];
