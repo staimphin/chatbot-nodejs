@@ -1,14 +1,26 @@
-
+/**
+  *
+  * Chatbot module
+  *
+  * Contains the mains functions of the chat bot
+  *
+  *
+  */
+  
 function Chatbot(){
-	this.apiWeather = 'api.openweathermap.org/data/2.5/weather?id=';
-	
+	this.apiWeather = 'api.openweathermap.org/data/2.5/weather?id=';// WeatherAPI URL
 	this.weatherResult = {};
-	
 	this.apiID = '7380d3cfd063f49e856e52be02c19a98';
+	// Predefined answer
 	this.greeting = ['こんにちは'];
-	this.weather = '';
+	this.weather = '';//will be filled 
 	this.base = ['すみません、出来る事は：基本挨拶・東京の天気予報・時間の知らせ', '言わぬが花'];
 	
+	/**
+	  *
+	  * Retrieve the weather for a city code from the open weather map site.
+	  *
+	  */
 	this.getWeather = function(cityCode, callback){
 		var request = require('request');
 		var apiURL = this.apiWeather +cityCode+'&appid='+this.apiID+'&lang=ja';
@@ -21,8 +33,7 @@ function Chatbot(){
 		    }
 		};
 
-		console.log('API call:'+apiURL);
-		//call back
+		//call back for retrieveing the weather
 		function getCurrentweatherCallback(weatherJSON){
 			console.log('inside the callback for weather');
 			this.weatherResult = weatherJSON;
@@ -36,49 +47,39 @@ function Chatbot(){
 		}
 		
 		//retrieve weather data from online api 
-		 request(options,  function(err, res, body) {
-		      if (!err && res.statusCode === 200) {
-			  
-			        //console.log('ajax call no error');
-			       //console.log(res);
+		request(options,  function(err, res, body) {
+			if (!err && res.statusCode === 200) {
 			        let json = JSON.parse(body);
-				//console.log(json);
-				 getCurrentweatherCallback(json);
-		      }else{
-			       console.log('ajax call error');
-			        console.log(err);
-			      weather = '天気予報は届かない。も一度やりましょうか。';
-			      return callback(weather);
+				getCurrentweatherCallback(json);
+			}else{
+				console.log('ajax call error');
+				console.log(err);
+				//Error message to display in chat
+				weather = '天気予報は届かない。も一度やりましょうか。';
+				return callback(weather);
 			}
-		  });
-		
-		//do some interpretattion
-		
+		});
 	}
 	
 	//Bot main function
   	this.listening = function(str, callback){
 		var botAnswer = '';
-		console.log('chatbot listening');
-		//check for a keyword
+		
+		//Handle empty case
 		if(typeof str === 'undefined'){
-			console.log('Undefiend str');
-			// get api information
-			
 			botAnswer = this.base[1];
 			
 			return callback(botAnswer);
 		}
+		
 		//Greeting
 		if(str.indexOf('こんにちは') !== -1){
-			console.log('Greeting');
 			botAnswer = this.greeting[0];
 			
 			return callback(botAnswer);
 		}
 		//Time
 		else if(str.indexOf('何時') !== -1){
-			console.log('time');
 			time = new Date();
 			var minute = time.getMinutes();
 			var hour = time.getHours();
@@ -88,25 +89,17 @@ function Chatbot(){
 		}
 		//Weather
 		else if(str.indexOf('天気') !== -1){
-			console.log('weather');
-			cityCode = 1850147;
-			
-			//botAnswer = '天気ですね。'+this.getWeather(cityCode, function (result){ return result;});
+			cityCode = 1850147;//Code for Tokyo
 			
 			return   this.getWeather(cityCode, callback );
 			
 		}
 		//default
 		else {
-			console.log('Bot default answer');
-			// get api information
-			
 			botAnswer = this.base[0];
 			
 			return callback(botAnswer);
 		}
-		
-		
 	}
 }
 
