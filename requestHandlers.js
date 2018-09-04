@@ -42,8 +42,13 @@ function chatsend(response, postData) {
 		console.log(data);
 		//output
 		db.setHistory(data);
+		time = new Date();
+		var seconds = time.getSeconds();
+		var minute = time.getMinutes();
+		var hour = time.getHours();
+		botAnswer = (hour < 10 ? "0" : "") +hour+':'+(minute < 10 ? "0" : "") +minute+':'+(seconds < 10 ? "0" : "")+seconds+' Bot >';
 		//display	
-		var body = '<li>'+answer+'</li>';
+		var body = '<li>'+botAnswer+answer+'</li>';
 		response.writeHead(200, {"Content-Type": "text/html"});
 		response.write(body);
 		response.end();

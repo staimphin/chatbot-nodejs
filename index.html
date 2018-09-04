@@ -16,36 +16,39 @@
 			<ul id="chatzone"></ul>
 		</div>
 		<script>
-		console.log($('#chatzone'));
-		
-		 $(document).ready(function () {
+		$(document).ready(function () {
 
-      $('#chatForm').submit(function (e) {
-	var userReq = $('input[name=user_input]').val();
-        var user = {
-          user_input: userReq
-        };
+				$('#chatForm').submit(function (e) {
+					var userReq = $('input[name=user_input]').val();
+					var user = {
+					user_input: userReq
+				};
+				
+				time = new Date();
+				var seconds = time.getSeconds();
+				var minute = time.getMinutes();
+				var hour = time.getHours();
+				timeAnswer = (hour < 10 ? "0" : "") +hour+':'+(minute < 10 ? "0" : "") +minute+':'+(seconds < 10 ? "0" : "")+seconds+' You >';
+				
+				$('#chatzone').append('<li>'+timeAnswer+userReq+'</li>');
+				$.ajax({
+				  type: 'POST',
+				  url: './chatsend',
+				  data: user
+				})
+				.done(function (data) {
+					  // clear form
+					  $('input[name=user_input]').val('');
+					
+					  setTimeout(function() {
+						$('#chatzone').append(data);
+					  }, 600);
+				});
 
-	$('#chatzone').append('<li>'+userReq+'</li>');
-        $.ajax({
-          type: 'POST',
-          url: './chatsend',
-          data: user
-        })
-        .done(function (data) {
-          // clear form
-          $('input[name=user_input]').val('');
-	  console.log(data);
-	
-          setTimeout(function() {
-		$('#chatzone').append(data);
-	  }, 600);
-        });
+				e.preventDefault();
+			});
 
-        e.preventDefault();
-      });
-
-    });
+		});
 		</script>
 	</body>
 </html>
